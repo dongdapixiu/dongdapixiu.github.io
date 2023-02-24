@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>国图藏宝图模拟抽奖</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            background: url("static/img/gtcbt/bg.png") no-repeat;
+            background-size: 100% 100%;
+        }
+        #home{
+            min-width: 320px;
+            max-width: 960px;
+            padding: 3px 0;
+            margin: auto;
+            text-align: center;
+            font-size: 16px;
+            background-color: #333333;
+            color: yellow;
+        }
+        .body-box{
+            min-width: 320px;
+            max-width: 960px;
+            width: auto;
+            margin: auto;
+            padding: 0 0 50px;
+        }
+        .header{
+            min-width: 320px;
+            max-width: 960px;
+        }
+        .key{
+            min-width: 320px;
+            max-width: 560px;
+            height: 40px;
+            margin: 20px auto;
+            line-height: 30px;
+            color: #ffc693;
+            font-size: 16px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .key-num{
+            margin-right: 20px;
+        }
+        .score-count{
+        }
+        .record{
+        }
+        .key-add{
+            width: 100%;
+            text-align: center;
+        }
+        .key-add > div{
+            width: 150px;
+            height: 40px;
+            display: inline-block;
+            box-sizing: border-box;
+            padding: 0;
+            cursor: pointer;
+        }
+        .pond{
+            min-width: 320px;
+            max-width: 960px;
+            margin: 20px auto;
+            padding: 0 15px 20px;
+            background: url("static/img/gtcbt/pond-bg.png") no-repeat;
+            background-size: 100% 100%;
+            font-size: 0;
+            position: relative;
+        }
+        .pond-change{
+            padding-top: 20px;
+        }
+        @media screen and (min-width: 768px) {
+            .pond{
+                padding: 0 40px 65px;
+            }
+            .pond-change{
+                padding-top: 55px;
+            }
+        }
+        .pond-change > div{
+            width: 50%;
+            display: inline-block;
+        }
+
+        .lottery{
+            margin-top: 30px;
+            text-align: center;
+        }
+        .lottery > div{
+            width: 150px;
+            height: 40px;
+            margin: 0 3px;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .treasure{
+            margin-top: 50px;
+        }
+        .treasure-title{
+            height: 40px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .treasure-hint{
+            text-align: center;
+            color: #f2d065;
+            font-size: 12px;
+        }
+        .treasure-put{
+            text-align: center;
+            height: 40px;
+            margin-top: 20px;
+        }
+        .treasure-put > div{
+            height: 40px;
+            margin: 0 10px;
+            display: inline-block;
+        }
+        .treasure-count{
+            color: #f2d065;
+            margin: 10px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            font-size: 15px;
+        }
+        .treasure-map{
+            height: 60px;
+            text-align: center;
+        }
+        .map{
+            width: 100%;
+            position: relative;
+        }
+        .map-shade{
+            width: 100%;
+            position: absolute;
+            top:1px;
+            left: 0;
+            bottom: 4px;
+            right: 0;
+            background: url("static/img/gtcbt/shade.png") no-repeat;
+            background-size: cover;
+        }
+
+        .temp-store{
+            text-align: center;
+            min-width: 320px;
+            max-width: 960px;
+            margin: 80px auto 0;
+            height: 200px;
+        }
+        .temp-store > div{
+            display: inline-block;
+            /*border: 1px solid yellow;*/
+            vertical-align: top;
+        }
+        .ts-title{
+            text-align: center;
+            color: #ffc693;
+            font-size: 38px;
+            line-height: 1.1;
+            font-weight: bold;
+            padding-top: 20px;
+            margin-bottom: 20px;
+        }
+        .ts-img{
+            width: 200px;
+            height: 135px;
+            background: url("static/img/gtcbt/storage-box-img.png") no-repeat;
+            background-size: 100% 100%;
+
+        }
+        .ts-view-img{
+            width: 150px;
+            height: 50px;
+            margin-top: 20px;
+            cursor: pointer
+        }
+        .ts-intro{
+            color: #fcbb8f;
+            font-size: 14px;
+            line-height: 1.4;
+            padding: 9px 0 0 10px;
+        }
+        .probability{
+            min-width: 320px;
+            max-width: 768px;
+            margin: 50px auto;
+            background: url("static/img/gtcbt/prob-bg.png") no-repeat;
+            background-size: 100% 100%;
+        }
+        .prob-btn{
+            text-align: center;
+            padding-top: 50px;
+            height: 40px;
+        }
+        @media screen and (min-width: 768px){
+            .prob-btn{
+                padding-top: 80px;
+            }
+        }
+        .prob-btn > div{
+            height: 40px;
+            width: 40%;
+            display: inline-block;
+        }
+        .prob-img{
+            width: 100%;
+            display: block;
+            font-size: 0;
+            box-sizing: border-box;
+            padding: 10px 20px;
+        }
+        .prob-img > img{
+            display: inline-block;
+            text-align: center;
+        }
+
+        .disclaimer{
+            min-width: 320px;
+            max-width: 960px;
+            margin: 100px auto 0;
+            padding: 0 20px;
+            color: #ffffff;
+        }
+
+        #temp-save-dialog{
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            margin: -250px 0 0 -250px;
+            display: none;
+            width: 500px;
+            background: url("static/img/gtcbt/bg.png") repeat;
+            z-index: 9999;
+        }
+        @media screen and (max-width: 768px){
+            #temp-save-dialog{
+                top:30%;
+                left: 30px;
+                right: 30px;
+                width: auto;
+                margin:0;
+            }
+            #temp-save-content{
+                height: 500px;
+            }
+        }
+        #shade{
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #000000;
+            opacity: 0.3;
+            z-index: 9998;
+            display: none;
+        }
+        #temp-save-header{
+            width: 100%;
+            height: 40px;
+            border-bottom: 1px solid #ffc693;
+        }
+        #temp-save-hint{
+            float: left;
+            font-size: 16px;
+            margin-left: 10px;
+            line-height: 40px;
+            color: #ffc693;
+        }
+        #temp-save-close{
+            width: 40px;
+            height: 40px;
+            color: #ffc693;
+            float: right;
+            font-size: 24px;
+            line-height: 40px;
+            text-align: center;
+            cursor: pointer;
+        }
+        #temp-save-content{
+            width: 100%;
+            height: 300px;
+            box-sizing: border-box;
+            padding: 0 10px;
+            background: url("static/img/gtcbt/bg.png") repeat;
+            color: #ffc693;
+            overflow-y: auto;
+        }
+        .temp-prop-list{
+            margin: 10px;
+            list-style:none;
+        }
+        .temp-prop-list > li{
+            clear: both;
+        }
+        .temp-prop-list > li > span{
+            margin: 5px 0;
+        }
+        .temp-prop-list > li > a{
+            margin: 5px 0;
+        }
+        .temp-prop-name{
+            float: left;
+        }
+        .resolve{
+            float: right;
+            width: 85px;
+            text-align: right;
+        }
+        .resolve-key-num{
+            float: right;
+            width: 30px;
+            text-align: right;
+            margin-right: 10px;
+        }
+        #prize10-dialog{
+            width: 320px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            margin-top: -225px;
+            margin-left: -160px;
+            background: url("static/img/gtcbt/prize-list-bg.png") no-repeat;
+            background-size: 100% 100%;
+            box-sizing: border-box;
+            padding: 0 15px;
+            display: none;
+            z-index: 9999;
+        }
+
+        #prize1-dialog{
+            width: 320px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            margin-top: -122px;
+            margin-left: -160px;
+            background: url("static/img/gtcbt/prize-list-bg.png") no-repeat;
+            background-size: 100%;
+            box-sizing: border-box;
+            padding: 0 15px;
+            display: none;
+            z-index: 9999;
+        }
+        .prize-title{
+            color: rgb(179,82,43);
+            text-align: center;
+            height: 40px;
+            line-height: 40px;
+            font-size: 25px;
+            font-weight: bold;
+            margin: 10px;
+        }
+        .prize-hint{
+            font-size: 12px;
+            color: rgb(179,82,43);
+            width: 100%;
+            text-align: center;
+            /*padding-top: 55px;*/
+        }
+        #prize10-list{
+            width: 100%;
+            height: 270px;
+            list-style: none;
+            margin-top: 8px;
+        }
+        #prize1-list{
+            width: 100%;
+            height: 27px;
+            list-style: none;
+            margin: 20px 0;
+        }
+        .prize-item{
+            width: 100%;
+            height: 27px;
+            color: rgb(179,82,43);
+            font-size: 12px;
+            line-height: 27px;
+            text-align: center;
+        }
+        .warm-prompt{
+            font-size: 12px;
+            color: rgb(179,82,43);
+            width: 100%;
+            margin: 10px 0 20px;
+            text-align: center;
+        }
+        .prize-dialog-close{
+            width: 25px;
+            height: 25px;
+            position: absolute;
+            top: -15px;
+            right: -20px;
+            background: url("static/img/close.png") no-repeat;
+            background-size: cover;
+        }
+
+        #dialog{
+            width: 280px;
+            height: 140px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            margin-top: -70px;
+            margin-left: -140px;
+            background: white;
+            border-radius: 3px;
+            z-index: 9999;
+            display: none;
+        }
+        #dialog-title{
+            width: 100%;
+            height: 30px;
+            line-height: 30px;
+            background: #2196F3;
+            box-sizing: border-box;
+            padding: 0px 5px;
+            font-size: 16px;
+            color: #fff;
+            border-radius: 3px;
+        }
+
+        #dialog-btn{
+            width: auto;
+            height: 30px;
+            line-height: 30px;
+            background: #2196F3;
+            box-sizing: border-box;
+            padding: 0px 5px;
+            font-size: 16px;
+            color: #fff;
+            border-radius: 3px;
+            border-top: solid 1px #eae8e8;
+            position: absolute;
+            bottom: 2px;
+            left: 2px;
+            right: 2px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        #loading{
+            width: 16px;
+            height: 16px;
+            position: fixed;
+            top:50%;
+            left: 50%;
+            margin-top: -8px;
+            margin-left: -8px;
+            background: url("static/img/load.gif") no-repeat 100%;
+            background-size: cover;
+            z-index: 9998;
+            display: none;
+        }
+    </style>
+    <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+    <script>LA.init({id: "JoSOCHPCXJ5VeUJR",ck: "JoSOCHPCXJ5VeUJR"})</script>
+</head>
+<body>
+<div id="intro"></div>
+<div class="body-box">
+    <div class="header">
+        <img src="static/img/gtcbt/banner.png" width="100%" height="100%">
+    </div>
+    <div class="draw">
+        <div class="key">
+            当前剩余钥匙：<span class="key-num" style="color: #f0f8ff"> </span>
+            拥有线索值：<span class="score-count" style="color: #f0f8ff"> </span>
+        </div>
+        <div class="key-add">
+            <div class="key-add-1" onclick="addKey(1)" title="增加1个钥匙">
+                <img src="static/img/gtcbt/key-1.png" width="100%" height="100%">
+            </div>
+            <div class="key-add-10" onclick="addKey(11)" title="增加11个钥匙">
+                <img src="static/img/gtcbt/key-10.png" width="100%" height="100%">
+            </div>
+        </div>
+        <div class="pond">
+            <div class="pond-change">
+                <div class="pond-1" onclick="cutPond(1)"><img src="static/img/gtcbt/change-1.png" width="100%"></div>
+                <div class="pond-2" onclick="cutPond(2)"><img src="static/img/gtcbt/change-2.png" width="100%"></div>
+            </div>
+            <img src="static/img/gtcbt/pond-1.png" width="100%" height="100%">
+        </div>
+        <div class="lottery">
+            <div class="lottery-1" onclick="draw(1)" title="进行一次抽奖">
+                <img src="static/img/gtcbt/lottery-1.png" width="100%" height="100%">
+            </div>
+            <div class="lottery-10" onclick="draw(10)" title="进行一次十连抽">
+                <img src="static/img/gtcbt/lottery-10.png" width="100%" height="100%">
+            </div>
+        </div>
+    </div>
+    <div class="treasure">
+        <div class="treasure-title">
+            <img src="static/img/gtcbt/map-title.png" height="100%">
+        </div>
+        <div class="treasure-hint">
+            每次抽奖获得藏宝图线索值，线索值投入（消耗）到对应宝藏路线，可以解锁领取相应奖励<br>
+            注：如累计获得2200线索值，但投入某一路线并未满2200，则无法领取2200线索值奖励
+        </div>
+        <div class="treasure-put">
+            <div class="treasure-put-10" onclick="treasurePut(10)">
+                <img src="static/img/gtcbt/put-1.png" height="100%">
+            </div>
+            <div class="treasure-put-100" onclick="treasurePut(100)">
+                <img src="static/img/gtcbt/put-10.png" height="100%">
+            </div>
+        </div>
+        <div class="treasure-count">当前拥有的线索值：<span class="score-count"></span></div>
+        <div class="treasure-map">
+            <div class="map">
+                <img src="static/img/gtcbt/map-1.png" width="100%">
+                <div class="map-shade"></div>
+            </div>
+
+        </div>
+    </div>
+    <div class="temp-store">
+        <h3 class="ts-title">暂存箱</h3>
+        <div class="ts-img">
+        </div>
+        <div class="ts-view">
+            <div class="ts-view-img" onclick="viewTempStore()">
+                <img src="static/img/gtcbt/storage-box-view.png" width="100%" height="100%">
+            </div>
+            <div class="ts-intro">
+                1.分解道具获得钥匙
+            </div>
+        </div>
+    </div>
+    <div class="probability">
+        <div class="prob-btn">
+            <div class="prob-1">
+                <img src="static/img/gtcbt/prob-btn-1.png" height="100%">
+            </div>
+            <div class="prob-2">
+                <img src="static/img/gtcbt/prob-btn-2.png" height="100%">
+            </div>
+        </div>
+        <div class="prob-img">
+            <img src="static/img/gtcbt/prob-1.png" width="50%">
+            <img src="static/img/gtcbt/prob-2.png" width="50%">
+        </div>
+    </div>
+    <div class="disclaimer">
+        <p style="font-size: 25px">声明：</p>
+        <p>本页面仅做为模拟娱乐，中奖概率不代表官方概率，抽中的道具也不会发往仓库。如有侵权联系即删～</p>
+        <p>联系邮箱：cferxbs@88.com</p>
+    </div>
+</div>
+<div id="shade"></div>
+<div id="dialog">
+    <h3 id="dialog-title"></h3>
+    <div id="dialog-content"></div>
+    <div id="dialog-btn" onclick="closeDialog()">确认</div>
+</div>
+<div id="prize10-dialog">
+    <div class="prize-title">中奖信息</div>
+    <div class="prize-dialog-close" onclick="closePrize10Dialog()"></div>
+    <div class="prize-hint">抽奖过程中请勿刷新页面，否则会丢失记录并重置抽奖数据。</div>
+    <ul id="prize10-list"></ul>
+    <div class="warm-prompt">
+        温馨提示:1.此页面为模拟抽奖，虚拟道具奖品不会发到您的游戏仓库。奖励道具显示没有延迟，不存在不展示的情况，请以当前页面为准，感谢您的理解与支持。
+    </div>
+</div>
+<div id="prize1-dialog">
+    <div class="prize-title">中奖信息</div>
+    <div class="prize-dialog-close" onclick="closePrize1Dialog()"></div>
+    <div class="prize-hint">抽奖过程中请勿刷新页面，否则会丢失记录并重置抽奖数据。</div>
+    <ul id="prize1-list"></ul>
+    <div class="warm-prompt">
+        温馨提示:1.此页面为模拟抽奖，虚拟道具奖品不会发到您的游戏仓库。奖励道具显示没有延迟，不存在不展示的情况，请以当前页面为准，感谢您的理解与支持。
+    </div>
+</div>
+<div id="temp-save-dialog">
+    <div style="width: 100%;height: 40px">
+        <div id="temp-save-header">
+            <div id="temp-save-hint">提示</div>
+            <div id="temp-save-close" onclick="closeTempSave()">&#10006;</div>
+        </div>
+        <div id="temp-save-content">
+        </div>
+    </div>
+</div>
+<div id="loading"></div>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+    var keyNum = 110;
+    var scoreCount = 0;
+    var tempStore = new Map;
+    var index = 0;
+    var drawType = 1;
+
+    $(function (){
+        alert("声明：\n " +
+            "本页面仅做为模拟娱乐，中奖概率不代表官方概率，抽中的道具也不会发往仓库。如有侵权联系即删～\n" +
+            "联系邮箱：cferxbs@88.com");
+        $(".key-num").text(keyNum);
+        $(".score-count").text(scoreCount);
+        $("#intro").load("cferxbs.html");
+    })
+    const probability1 = [
+        [1,20,'幻神-丹凤皮肤'],
+        [21,50, '觉醒版王者之幻'],
+        [51,90, '莎莎'],
+        [91,150, 'AK47-黑鲨'],
+        [151,210, 'M4A1-龙血'],
+        [211,270, '黑骑士-白马银枪皮肤'],
+        [271,360, '雷神-烈虎皮肤'],
+        [361,450, '语音特效-机器人兑换卷x1'],
+        [451,650, 'M200-幻神蓝粉色光效'],
+        [651,2000, '王者之石x1'],
+        [2001,2050, '线索值x100'],
+        [2051,2200, '线索值x30'],
+        [2201,4200, '线索值x15'],
+        [4201,7200, '线索值x10'],
+        [7201,9980, '线索值x5'],
+    ];
+
+    const probability2 = [
+        [1,20,'幻神-青鹤皮肤'],
+        [21,50, '觉醒版王者之戮'],
+        [51,90, '女战神'],
+        [91,150, 'AK47-黑鲨'],
+        [151,210, 'M4A1-龙血'],
+        [211,270, '黑骑士-白马银枪皮肤'],
+        [271,360, '雷神-烈虎皮肤'],
+        [361,450, '语音特效-生化兑换卷x1'],
+        [451,650, 'M200-幻神蓝粉色光效'],
+        [651,2000, '王者之石x1'],
+        [2001,2050, '线索值x100'],
+        [2051,2200, '线索值x30'],
+        [2201,4200, '线索值x15'],
+        [4201,7200, '线索值x10'],
+        [7201,9980, '线索值x5'],
+    ];
+
+    var destroyMap = new Map();
+    destroyMap.set('幻神-丹凤皮肤',20);
+    destroyMap.set('幻神-青鹤皮肤',20);
+    destroyMap.set('觉醒版王者之幻',10);
+    destroyMap.set('觉醒版王者之戮',10);
+    destroyMap.set('莎莎',8);
+    destroyMap.set('女战神',8);
+    destroyMap.set('AK47-黑鲨',6);
+    destroyMap.set('M4A1-龙血',6);
+    destroyMap.set('黑骑士-白马银枪皮肤',6);
+    destroyMap.set('雷神-烈虎皮肤',4);
+    destroyMap.set('语音特效-机器人兑换卷x1',4);
+    destroyMap.set('语音特效-生化兑换卷x1',4);
+    destroyMap.set('M200-幻神蓝粉色光效',1);
+
+    var scoreMap = new Map();
+    scoreMap.set('线索值x5',5);
+    scoreMap.set('线索值x10',10);
+    scoreMap.set('线索值x20',20);
+    scoreMap.set('线索值x50',50);
+    scoreMap.set('线索值x100',100);
+
+    var treasureMap = new Map();
+    treasureMap.set(1,[120,80,120]);
+    treasureMap.set(2,[200,60,320]);
+    treasureMap.set(3,[280,40,600]);
+    treasureMap.set(4,[500,20,1100]);
+    treasureMap.set(5,[1100,0,2200]);
+
+    var mapShadeWidth1 = 100;
+    var mapShadeWidth2 = 100;
+
+    var gridNum1 = 1;
+    var gridNum2 = 1;
+
+    var treasureTotal1 = Number(0);
+    var treasureTotal2 = Number(0);
+
+    function cutPond(PACP1) {
+        if (PACP1 === 1) {
+            $("\x2e\x70\x6f\x6e\x64 \x3e \x69\x6d\x67")["\x61\x74\x74\x72"]("\x73\x72\x63", "\x73\x74\x61\x74\x69\x63\x2f\x69\x6d\x67\x2f\x67\x74\x63\x62\x74\x2f\x70\x6f\x6e\x64\x2d\x31\x2e\x70\x6e\x67");
+            drawType = 1;
+            $("\x2e\x6d\x61\x70 \x3e \x69\x6d\x67")["\x61\x74\x74\x72"]("\x73\x72\x63", "\x73\x74\x61\x74\x69\x63\x2f\x69\x6d\x67\x2f\x67\x74\x63\x62\x74\x2f\x6d\x61\x70\x2d\x31\x2e\x70\x6e\x67");
+            $("\x2e\x6d\x61\x70\x2d\x73\x68\x61\x64\x65")["\x63\x73\x73"]("\x77\x69\x64\x74\x68", "" + mapShadeWidth1 + "\x25");
+        } else if (PACP1 === 2) {
+            $("\x2e\x70\x6f\x6e\x64 \x3e \x69\x6d\x67")["\x61\x74\x74\x72"]("\x73\x72\x63", "\x73\x74\x61\x74\x69\x63\x2f\x69\x6d\x67\x2f\x67\x74\x63\x62\x74\x2f\x70\x6f\x6e\x64\x2d\x32\x2e\x70\x6e\x67");
+            $("\x2e\x6d\x61\x70 \x3e \x69\x6d\x67")["\x61\x74\x74\x72"]("\x73\x72\x63", "\x73\x74\x61\x74\x69\x63\x2f\x69\x6d\x67\x2f\x67\x74\x63\x62\x74\x2f\x6d\x61\x70\x2d\x32\x2e\x70\x6e\x67");
+            drawType = 2;
+            $("\x2e\x6d\x61\x70\x2d\x73\x68\x61\x64\x65")["\x63\x73\x73"]("\x77\x69\x64\x74\x68", "" + mapShadeWidth2 + "\x25");
+        }
+    }
+    function addKey(GpY2) {
+        openLoad();
+        setTimeout(function() {
+                keyNum = $("\x2e\x6b\x65\x79\x2d\x6e\x75\x6d")["\x74\x65\x78\x74"]();
+                keyNum = window["\x4e\x75\x6d\x62\x65\x72"](keyNum) + window["\x4e\x75\x6d\x62\x65\x72"](GpY2);
+                $("\x2e\x6b\x65\x79\x2d\x6e\x75\x6d")["\x74\x65\x78\x74"](keyNum);
+                let content = "\x3c\x70 \x73\x74\x79\x6c\x65\x3d\x27\x74\x65\x78\x74\x2d\x61\x6c\x69\x67\x6e\x3a \x63\x65\x6e\x74\x65\x72\x3b\x6d\x61\x72\x67\x69\x6e\x2d\x74\x6f\x70\x3a \x32\x30\x70\x78\x27\x3e\u606d\u559c\u4f60\u83b7\u5f97 " + GpY2 + " \u628a\u94a5\u5319\x3c\x2f\x70\x3e";
+                closeLoad();
+                openDialog("\u7cfb\u7edf\u6d88\u606f", content);
+            },
+            200);
+    }
+    function draw(SoehM3) {
+        if (keyNum < SoehM3) return window["\x61\x6c\x65\x72\x74"]("\u94a5\u5319\u4e0d\u8db3");
+        openLoad();
+        let delayTime = 100;
+        if (keyNum > 1) delayTime = 300;
+        setTimeout(function() {
+                let prizeList = '';
+                let probability = probability1;
+                if (drawType === 1) probability = probability1;
+                if (drawType === 2) probability = probability2;
+                for (i = 0; i < SoehM3; i++) {
+                    var eiR4 = window["\x4d\x61\x74\x68"]["\x63\x65\x69\x6c"](window["\x4d\x61\x74\x68"]["\x72\x61\x6e\x64\x6f\x6d"]() * 10000);
+                    var SbZLThOgK5 = '';
+                    for (j = 0; j < probability["\x6c\x65\x6e\x67\x74\x68"]; j++) {
+                        var w6 = probability[j][0];
+                        var Lh7 = probability[j][1];
+                        if (eiR4 >= w6 && eiR4 <= Lh7) {
+                            SbZLThOgK5 = probability[j][2];
+                            if (destroyMap["\x68\x61\x73"](SbZLThOgK5)) {
+                                var kfsc8 = {
+                                    name: SbZLThOgK5,
+                                    status: 0,
+                                    keyNum: destroyMap["\x67\x65\x74"](SbZLThOgK5)
+                                };
+                                tempStore["\x73\x65\x74"](index++, kfsc8);
+                            } else if (scoreMap["\x68\x61\x73"](SbZLThOgK5)) {
+                                scoreCount += scoreMap["\x67\x65\x74"](SbZLThOgK5);
+                            }
+                        }
+                    }
+                    prizeList += "\x3c\x6c\x69 \x63\x6c\x61\x73\x73\x3d\x27\x70\x72\x69\x7a\x65\x2d\x69\x74\x65\x6d\x27\x3e" + SbZLThOgK5 + "\x3c\x2f\x6c\x69\x3e";
+                }
+                keyNum = window["\x4e\x75\x6d\x62\x65\x72"](keyNum) - window["\x4e\x75\x6d\x62\x65\x72"](SoehM3);
+                $("\x2e\x6b\x65\x79\x2d\x6e\x75\x6d")["\x74\x65\x78\x74"](keyNum);
+                $("\x2e\x73\x63\x6f\x72\x65\x2d\x63\x6f\x75\x6e\x74")["\x74\x65\x78\x74"](scoreCount);
+                closeLoad();
+                if (SoehM3 === 1) {
+                    openPrize1Dialog(prizeList)
+                } else {
+                    openPrize10Dialog(prizeList)
+                }
+            },
+            delayTime);
+    }
+    var RuOi$rTt9 = new Set();
+    function treasurePut(YsF10) {
+        if (scoreCount < YsF10) {
+            openDialog('\u7cfb\u7edf\u6d88\u606f', '\x3c\x70 \x73\x74\x79\x6c\x65\x3d\x22\x6d\x61\x72\x67\x69\x6e\x2d\x74\x6f\x70\x3a \x32\x30\x70\x78\x3b\x74\x65\x78\x74\x2d\x61\x6c\x69\x67\x6e\x3a \x63\x65\x6e\x74\x65\x72\x22\x3e\u5269\u4f59\u7ebf\u7d22\u4e0d\u8db3\x3c\x2f\x70\x3e');
+            return;
+        }
+        let treasureTotal = 0;
+        if (drawType === 1) {
+            treasureTotal = treasureTotal1;
+        } else {
+            treasureTotal = treasureTotal2;
+        }
+        if (treasureTotal >= 2200) {
+            return openDialog('\u7cfb\u7edf\u6d88\u606f', '\x3c\x70 \x73\x74\x79\x6c\x65\x3d\x22\x6d\x61\x72\x67\x69\x6e\x2d\x74\x6f\x70\x3a \x32\x30\x70\x78\x3b\x74\x65\x78\x74\x2d\x61\x6c\x69\x67\x6e\x3a \x63\x65\x6e\x74\x65\x72\x22\x3e\u4f60\u5df2\u6210\u529f\u89e3\u9501\uff0c\u65e0\u9700\u518d\u6295\u5165\u7ebf\u7d22\u503c\x3c\x2f\x70\x3e');
+        }
+        let usage = getMapShadeWidth(YsF10);
+        scoreCount = scoreCount - usage;
+        let mapShadeWidth = 100;
+        if (drawType === 1) {
+            mapShadeWidth = mapShadeWidth1;
+        } else {
+            mapShadeWidth = mapShadeWidth2;
+        }
+        $("\x2e\x6d\x61\x70\x2d\x73\x68\x61\x64\x65")["\x63\x73\x73"]("\x77\x69\x64\x74\x68", "" + mapShadeWidth + "\x25");
+        $("\x2e\x73\x63\x6f\x72\x65\x2d\x63\x6f\x75\x6e\x74")["\x74\x65\x78\x74"](scoreCount);
+        if (drawType === 1) {
+            treasureTotal = treasureTotal1;
+        } else {
+            treasureTotal = treasureTotal2;
+        }
+        let tempProp = {
+            name: '',
+            status: 0,
+            keyNum: 0
+        };
+        if (treasureTotal >= 2200) {
+            if (drawType === 1) {
+                tempProp["\x6e\x61\x6d\x65"] = '\u5e7b\u795e\x2d\u4e39\u51e4\u76ae\u80a4';
+                tempProp["\x6b\x65\x79\x4e\x75\x6d"] = destroyMap["\x67\x65\x74"]('\u5e7b\u795e\x2d\u4e39\u51e4\u76ae\u80a4');
+            } else {
+                tempProp["\x6e\x61\x6d\x65"] = '\u5e7b\u795e\x2d\u9752\u9e64\u76ae\u80a4';
+                tempProp["\x6b\x65\x79\x4e\x75\x6d"] = destroyMap["\x67\x65\x74"]('\u5e7b\u795e\x2d\u9752\u9e64\u76ae\u80a4');
+            }
+        } else if (treasureTotal >= 1100) {
+            if (drawType === 1) {
+                tempProp["\x6e\x61\x6d\x65"] = '\u838e\u838e';
+                tempProp["\x6b\x65\x79\x4e\x75\x6d"] = destroyMap["\x67\x65\x74"]('\u838e\u838e');
+            } else {
+                tempProp["\x6e\x61\x6d\x65"] = '\u5973\u6218\u795e';
+                tempProp["\x6b\x65\x79\x4e\x75\x6d"] = destroyMap["\x67\x65\x74"]('\u5973\u6218\u795e');
+            }
+        } else if (treasureTotal >= 600) {
+            if (drawType === 1) {
+                tempProp["\x6e\x61\x6d\x65"] = '\x41\x4b\x34\x37\x2d\u9ed1\u9ca8';
+                tempProp["\x6b\x65\x79\x4e\x75\x6d"] = destroyMap["\x67\x65\x74"]('\x41\x4b\x34\x37\x2d\u9ed1\u9ca8');
+            } else {
+                tempProp["\x6e\x61\x6d\x65"] = '\x4d\x34\x41\x31\x2d\u9f99\u8840';
+                tempProp["\x6b\x65\x79\x4e\x75\x6d"] = destroyMap["\x67\x65\x74"]('\x4d\x34\x41\x31\x2d\u9f99\u8840');
+            }
+        } else if (treasureTotal >= 320) {
+            if (drawType === 1) {
+                tempProp["\x6e\x61\x6d\x65"] = '\u8bed\u97f3\u7279\u6548\x2d\u673a\u5668\u4eba\u5151\u6362\u5377\x78\x31';
+                tempProp["\x6b\x65\x79\x4e\x75\x6d"] = destroyMap["\x67\x65\x74"]('\u8bed\u97f3\u7279\u6548\x2d\u673a\u5668\u4eba\u5151\u6362\u5377\x78\x31');
+            } else {
+                tempProp["\x6e\x61\x6d\x65"] = '\u8bed\u97f3\u7279\u6548\x2d\u751f\u5316\u5151\u6362\u5377\x78\x31';
+                tempProp["\x6b\x65\x79\x4e\x75\x6d"] = destroyMap["\x67\x65\x74"]('\u8bed\u97f3\u7279\u6548\x2d\u751f\u5316\u5151\u6362\u5377\x78\x31');
+            }
+        } else if (treasureTotal >= 120) {
+            if (drawType === 1) {
+                tempProp["\x6e\x61\x6d\x65"] = '\x4d\x32\x30\x30\x2d\u5e7b\u795e\u84dd\u7c89\u8272\u5149\u6548\x31';
+                tempProp["\x6b\x65\x79\x4e\x75\x6d"] = destroyMap["\x67\x65\x74"]('\x4d\x32\x30\x30\x2d\u5e7b\u795e\u84dd\u7c89\u8272\u5149\u6548');
+            } else {
+                tempProp["\x6e\x61\x6d\x65"] = '\x4d\x32\x30\x30\x2d\u5e7b\u795e\u84dd\u7c89\u8272\u5149\u6548\x32';
+                tempProp["\x6b\x65\x79\x4e\x75\x6d"] = destroyMap["\x67\x65\x74"]('\x4d\x32\x30\x30\x2d\u5e7b\u795e\u84dd\u7c89\u8272\u5149\u6548');
+            }
+        }
+        if (tempProp["\x6e\x61\x6d\x65"] && !RuOi$rTt9["\x68\x61\x73"](tempProp["\x6e\x61\x6d\x65"])) {
+            RuOi$rTt9["\x61\x64\x64"](tempProp["\x6e\x61\x6d\x65"]);
+            if (tempProp["\x6e\x61\x6d\x65"]["\x69\x6e\x64\x65\x78\x4f\x66"]('\x4d\x32\x30\x30\x2d\u5e7b\u795e\u84dd\u7c89\u8272\u5149\u6548') >= 0) {
+                tempProp["\x6e\x61\x6d\x65"] = '\x4d\x32\x30\x30\x2d\u5e7b\u795e\u84dd\u7c89\u8272\u5149\u6548';
+            }
+            tempStore["\x73\x65\x74"](index++, tempProp);
+            openLoad();
+            setTimeout(function() {
+                    closeLoad();
+                    return openDialog('\u7cfb\u7edf\u6d88\u606f', '\x3c\x70 \x73\x74\x79\x6c\x65\x3d\x22\x74\x65\x78\x74\x2d\x61\x6c\x69\x67\x6e\x3a \x63\x65\x6e\x74\x65\x72\x3b\x6d\x61\x72\x67\x69\x6e\x2d\x74\x6f\x70\x3a \x32\x30\x70\x78\x22\x3e\u606d\u559c\u4f60\u901a\u8fc7\u89e3\u9501\u85cf\u5b9d\u56fe\u83b7\u5f97\u4e86' + tempProp["\x6e\x61\x6d\x65"] + '\x3c\x2f\x70\x3e');
+                },
+                300)
+        }
+    }
+    function getMapShadeWidth(sqkpSeBV11) {
+        let usage = 0;
+        let gridNum = 1;
+        let mapShadeWidth = 100;
+        let treasureTotal = 0;
+        if (drawType === 1) {
+            gridNum = gridNum1;
+            mapShadeWidth = mapShadeWidth1;
+            treasureTotal = treasureTotal1;
+        } else {
+            gridNum = gridNum2;
+            mapShadeWidth = mapShadeWidth2;
+            treasureTotal = treasureTotal2;
+        }
+        let item = treasureMap["\x67\x65\x74"](gridNum);
+        let treasureNum = item[0];
+        let minWidth = item[1];
+        let widthRate = (20 / treasureNum);
+        let subWidth = (widthRate * sqkpSeBV11)["\x74\x6f\x46\x69\x78\x65\x64"](2);
+        let widthSum = window["\x4e\x75\x6d\x62\x65\x72"](minWidth) + window["\x4e\x75\x6d\x62\x65\x72"](subWidth);
+        if (widthSum >= mapShadeWidth) {
+            mapShadeWidth = minWidth;
+            usage = item[2] - treasureTotal;
+            treasureTotal = item[2];
+            gridNum++;
+            if (drawType === 1) {
+                gridNum1 = gridNum;
+                mapShadeWidth1 = mapShadeWidth;
+                treasureTotal1 = treasureTotal;
+            } else {
+                gridNum2 = gridNum;
+                mapShadeWidth2 = mapShadeWidth;
+                treasureTotal2 = treasureTotal;
+            }
+        } else {
+            mapShadeWidth = (mapShadeWidth - subWidth)["\x74\x6f\x46\x69\x78\x65\x64"](2);
+            usage = sqkpSeBV11;
+            treasureTotal += window["\x4e\x75\x6d\x62\x65\x72"](usage);
+            if (drawType === 1) {
+                gridNum1 = gridNum;
+                mapShadeWidth1 = mapShadeWidth;
+                treasureTotal1 = treasureTotal;
+            } else {
+                gridNum2 = gridNum;
+                mapShadeWidth2 = mapShadeWidth;
+                treasureTotal2 = treasureTotal;
+            }
+        }
+        return usage;
+    }
+    function viewTempStore() {
+        setTimeout(function() {
+                var lgg12 = getTempStoreHtml();
+                openTempSave('\u6682\u5b58\u7bb1', lgg12);
+            },
+            100);
+    }
+    function getTempStoreHtml() {
+        var opsCtfUED13 = "\x3c\x75\x6c \x63\x6c\x61\x73\x73\x3d\x27\x74\x65\x6d\x70\x2d\x70\x72\x6f\x70\x2d\x6c\x69\x73\x74\x27\x3e";
+        for (let key of tempStore["\x6b\x65\x79\x73"]()) {
+            let tempProp = tempStore["\x67\x65\x74"](key);
+            var lmuVHanHQ14 = '';
+            if (tempProp["\x73\x74\x61\x74\x75\x73"] === 0) {
+                lmuVHanHQ14 = '\x3c\x6c\x69\x3e\x3c\x73\x70\x61\x6e \x63\x6c\x61\x73\x73\x3d\x22\x74\x65\x6d\x70\x2d\x70\x72\x6f\x70\x2d\x6e\x61\x6d\x65\x22\x3e' + tempProp["\x6e\x61\x6d\x65"] + '\x3c\x2f\x73\x70\x61\x6e\x3e\x3c\x61 \x68\x72\x65\x66\x3d\x22\x6a\x61\x76\x61\x73\x63\x72\x69\x70\x74\x3a\x76\x6f\x69\x64 \x28\x30\x29\x3b\x22 \x63\x6c\x61\x73\x73\x3d\x22\x72\x65\x73\x6f\x6c\x76\x65\x22  \x6f\x6e\x63\x6c\x69\x63\x6b\x3d\x22\x64\x65\x63\x6f\x6d\x70\x6f\x73\x65\x28' + key + '\x29\x22\x3e\u5206\u89e3\x3c\x2f\x61\x3e\x3c\x73\x70\x61\x6e \x63\x6c\x61\x73\x73\x3d\x22\x72\x65\x73\x6f\x6c\x76\x65\x2d\x6b\x65\x79\x2d\x6e\x75\x6d\x22\x3e' + tempProp["\x6b\x65\x79\x4e\x75\x6d"] + '\x3c\x2f\x73\x70\x61\x6e\x3e\x3c\x2f\x6c\x69\x3e';
+            } else {
+                lmuVHanHQ14 = '\x3c\x6c\x69\x3e\x3c\x73\x70\x61\x6e \x63\x6c\x61\x73\x73\x3d\x22\x74\x65\x6d\x70\x2d\x70\x72\x6f\x70\x2d\x6e\x61\x6d\x65\x22\x3e' + tempProp["\x6e\x61\x6d\x65"] + '\x3c\x2f\x73\x70\x61\x6e\x3e\x3c\x73\x70\x61\x6e \x63\x6c\x61\x73\x73\x3d\x22\x72\x65\x73\x6f\x6c\x76\x65\x22\x3e\u5df2\u5206\u89e3\x3c\x2f\x73\x70\x61\x6e\x3e\x3c\x73\x70\x61\x6e \x63\x6c\x61\x73\x73\x3d\x22\x72\x65\x73\x6f\x6c\x76\x65\x2d\x6b\x65\x79\x2d\x6e\x75\x6d\x22\x3e' + tempProp["\x6b\x65\x79\x4e\x75\x6d"] + '\x3c\x2f\x73\x70\x61\x6e\x3e\x3c\x2f\x6c\x69\x3e';
+            }
+            opsCtfUED13 += lmuVHanHQ14;
+        }
+        opsCtfUED13 += "\x3c\x2f\x75\x6c\x3e";
+        return opsCtfUED13;
+    }
+    function openShade() {
+        $("\x23\x73\x68\x61\x64\x65")["\x73\x68\x6f\x77"]();
+        $("\x62\x6f\x64\x79")["\x63\x73\x73"]("\x6f\x76\x65\x72\x66\x6c\x6f\x77", "\x68\x69\x64\x64\x65\x6e");
+    }
+    function closeShade() {
+        $("\x23\x73\x68\x61\x64\x65")["\x68\x69\x64\x65"]();
+        $("\x62\x6f\x64\x79")["\x63\x73\x73"]("\x6f\x76\x65\x72\x66\x6c\x6f\x77", "\x61\x75\x74\x6f");
+    }
+    function openTempSave(LEE$vZ15, IMh16) {
+        if (LEE$vZ15) $("\x23\x74\x65\x6d\x70\x2d\x73\x61\x76\x65\x2d\x68\x69\x6e\x74")["\x74\x65\x78\x74"](LEE$vZ15);
+        $("\x23\x74\x65\x6d\x70\x2d\x73\x61\x76\x65\x2d\x63\x6f\x6e\x74\x65\x6e\x74")["\x68\x74\x6d\x6c"](IMh16);
+        $("\x23\x74\x65\x6d\x70\x2d\x73\x61\x76\x65\x2d\x64\x69\x61\x6c\x6f\x67")["\x73\x68\x6f\x77"]();
+        openShade()
+    }
+    function closeTempSave() {
+        $("\x23\x74\x65\x6d\x70\x2d\x73\x61\x76\x65\x2d\x64\x69\x61\x6c\x6f\x67")["\x68\x69\x64\x65"]();
+        closeShade()
+    }
+    function decompose(Jsuzodlap17) {
+        let tempProp = tempStore["\x67\x65\x74"](Jsuzodlap17);
+        if (tempProp["\x73\x74\x61\x74\x75\x73"] === 1) return window["\x61\x6c\x65\x72\x74"]("\u4e0d\u80fd\u91cd\u590d\u5206\u89e3");
+        let num = destroyMap["\x67\x65\x74"](tempProp["\x6e\x61\x6d\x65"]);
+        keyNum += num;
+        $("\x2e\x6b\x65\x79\x2d\x6e\x75\x6d")["\x74\x65\x78\x74"](keyNum);
+        tempProp["\x73\x74\x61\x74\x75\x73"] = 1;
+        var PTIYJa18 = getTempStoreHtml();
+        $("\x23\x74\x65\x6d\x70\x2d\x73\x61\x76\x65\x2d\x63\x6f\x6e\x74\x65\x6e\x74")["\x68\x74\x6d\x6c"](PTIYJa18);
+    }
+    function openPrize10Dialog(Sb19) {
+        $("\x23\x70\x72\x69\x7a\x65\x31\x30\x2d\x6c\x69\x73\x74")["\x68\x74\x6d\x6c"](Sb19);
+        $("\x23\x70\x72\x69\x7a\x65\x31\x30\x2d\x64\x69\x61\x6c\x6f\x67")["\x73\x68\x6f\x77"]();
+        openShade();
+    }
+    function closePrize10Dialog() {
+        $("\x23\x70\x72\x69\x7a\x65\x31\x30\x2d\x64\x69\x61\x6c\x6f\x67")["\x68\x69\x64\x65"]();
+        closeShade();
+    }
+    function openPrize1Dialog(sAXOquvCf20) {
+        $("\x23\x70\x72\x69\x7a\x65\x31\x2d\x6c\x69\x73\x74")["\x68\x74\x6d\x6c"](sAXOquvCf20);
+        $("\x23\x70\x72\x69\x7a\x65\x31\x2d\x64\x69\x61\x6c\x6f\x67")["\x73\x68\x6f\x77"]();
+        openShade()
+    }
+    function closePrize1Dialog() {
+        $("\x23\x70\x72\x69\x7a\x65\x31\x2d\x64\x69\x61\x6c\x6f\x67")["\x68\x69\x64\x65"]();
+        closeShade()
+    }
+    function closeDialog() {
+        $("\x23\x64\x69\x61\x6c\x6f\x67")["\x68\x69\x64\x65"]();
+        closeShade()
+    }
+    function openDialog(FDql21, NsaiUAOs22) {
+        if (FDql21) $("\x23\x64\x69\x61\x6c\x6f\x67\x2d\x74\x69\x74\x6c\x65")["\x74\x65\x78\x74"](FDql21);
+        $("\x23\x64\x69\x61\x6c\x6f\x67\x2d\x63\x6f\x6e\x74\x65\x6e\x74")["\x68\x74\x6d\x6c"](NsaiUAOs22);
+        $("\x23\x64\x69\x61\x6c\x6f\x67")["\x73\x68\x6f\x77"]();
+        openShade()
+    }
+    function openLoad() {
+        openShade();
+        $("\x23\x6c\x6f\x61\x64\x69\x6e\x67")["\x73\x68\x6f\x77"]();
+    }
+    function closeLoad() {
+        $("\x23\x6c\x6f\x61\x64\x69\x6e\x67")["\x68\x69\x64\x65"]();
+        closeShade();
+    }
+</script>
+</body>
+</html>

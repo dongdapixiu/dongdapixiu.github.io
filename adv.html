@@ -1,0 +1,63 @@
+    <style>
+        .adv{
+            min-width: 320px;
+            max-width: 960px;
+            /*height: 40px;*/
+            /*line-height: 40px;*/
+            margin: 0 auto;
+            padding: 5px;
+            box-sizing: border-box;
+            text-align: center;
+            background-color: #666;
+            /*background-image: linear-gradient(-90deg, #CCFBFF, #EF96C5);*/
+        }
+        .adv > a{
+            font-size: 16px;
+            color: #ffb800;
+            text-decoration: none;
+        }
+        #activity{
+            min-width: 320px;
+            max-width: 960px;
+            margin: 39px auto 0;
+            font-size: 0;
+        }
+        @media screen and (min-width: 768px){
+            #activity{
+                margin: 98px auto 0;
+            }
+        }
+        .adv-img{
+            min-width: 320px;
+            max-width: 960px;
+            margin: 0 auto;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+        .adv-a{
+            display: inline-block;
+            width: 100%;
+        }
+    </style>
+    <div class="adv-img">
+        <a href="https://jq.qq.com/?_wv=1027&k=nezkRgUr" target="_blank"><img src="static/img/adv.png" width="100%"> </a>
+    </div>
+<!--    <div class="adv">-->
+<!--&lt;!&ndash;        <a onclick="openVx()">代做：炼狱-玩具枪(皮肤) 曼陀罗礼服(角色) 召集币等</a>&ndash;&gt;-->
+<!--        <a href="http://cferhdb.cferx.cn" target="_blank">代做：炼狱皮肤 曼陀罗礼服 毁灭-暗月 死亡之眼-庆典 宇航兔皮肤 召集币等</a>-->
+<!--    </div>-->
+    <div class="adv">
+        <a class="adv-a" href="http://cferhdb.cferx.cn" target="_blank">代做：炼狱皮肤 毁灭-暗月 死亡之眼-庆典 初恋灵狐 CFVIP 胡萝卜匕首 CPW-动力-潘多拉 M4A1-千变-孔明皮肤等等</a>
+    </div>
+    <div class="adv" style="background-image: linear-gradient(-90deg, #70E1F5 0%, #FFD194 100%);">
+        <a class="adv-a" onclick="openVx()" style="color: #c13737;font-weight: bold">白嫖：CFVIP(30天) USP-小动物 老虎帽子 斯泰尔-朋克</a>
+    </div>
+    <script>
+        function openVx() {
+            let html = '<img src="static/img/adv/gzh.png" width="100%" style="margin-top:20px">';
+            openDialogData('微信公众号搜索关注：玩家小帮手',html);
+        }
+    </script>
